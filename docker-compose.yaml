@@ -1,0 +1,26 @@
+services:
+
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - 33060:33060
+    environment:
+      # ejemplo ANCHORS
+      MYSQL_ROOT_PASSWORD: &password example
+      MYSQL_USER: fruta
+      MYSQL_PASSWORD: frutita
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8001:80"
+    environment:
+      PMA_HOST: mysql:3306
+      MYSQL_ROOT_PASSWORD: *password
+volumes:
+  mysqldata: {}
+      
