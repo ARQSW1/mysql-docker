@@ -1,5 +1,4 @@
 services:
-
   mysql:
     image: mysql
     restart: unless-stopped
@@ -9,7 +8,7 @@ services:
       - 33060:33060
     environment:
       # ejemplo ANCHORS
-      MYSQL_ROOT_PASSWORD: &password example
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: fruta
       MYSQL_PASSWORD: frutita
   phpmyadmin:
@@ -20,7 +19,7 @@ services:
       - "8001:80"
     environment:
       PMA_HOST: mysql:3306
-      MYSQL_ROOT_PASSWORD: *password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 volumes:
   mysqldata: {}
       
