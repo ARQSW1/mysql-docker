@@ -4,17 +4,20 @@ services:
     restart: unless-stopped
     volumes:
       - mysqldata:/var/lib/mysql
-    ports:
-      - 33060:33060
+    expose:
+      - 33060
     environment:
-      # ejemplo ANCHORS
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # CON ANCHORS
+      #MYSQL_ROOT_PASSWORD: &password soyUnPassword
       MYSQL_USER: fruta
-      MYSQL_PASSWORD: frutita
+      MYSQL_PASSWORD:  frutita
     healthcheck: 
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+    networks:
+      - internal
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     container_name: phpmyadmin
@@ -24,9 +27,17 @@ services:
     environment:
       PMA_HOST: mysql:3306
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # CON ANCHORS
+      #MYSQL_ROOT_PASSWORD: *password
+    networks:
+      - internal
+      - external
     depends_on:
       mysql: 
         condition: service_healthy 
+networks:
+  internal: {}
+  external: {}
 volumes:
   mysqldata: {}
       
